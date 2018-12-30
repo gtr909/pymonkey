@@ -87,16 +87,16 @@ class Parser:
 		
 		self.curToken.printout()
 		
-		print("ParseProgram(): ", self.curToken.Type)
+		print("ParseProgram()1: ", self.curToken.Type)
 		
 		while self.curToken.Type != token.EOF:
 			stmt = self.parseStatement()
-			print("ParseProgram(): ", stmt)
+			print("ParseProgram()2: ", stmt)
 			if stmt != None:
 				program.Statements.append(stmt)
 			self.nextToken()
 		
-		print("ParseProgram(): ", program)
+		print("ParseProgram()3: ", program)
 		
 		return program
 	
@@ -170,18 +170,29 @@ class Parser:
 		return stmt
 		
 	def parseExpression(self, precedence):
-		print("parseExpression(): ", precedence)
-		print("parseExpression(): ", self.curToken.Type)
+		print("parseExpression()1: ", precedence)
+		print("parseExpression()2: ", self.curToken.Type)
 		
+		""" 下のエラー処理込みに修正
 		prefix = self.prefixParseFns[self.curToken.Type]
-		print("parseExpression(): ", prefix)
+		print("parseExpression()3: ", prefix)
+		"""
+		#############################
+		# 小数点を使用した場合のエラーキャッチ
+		if self.curToken.Type in self.prefixParseFns:			#
+			prefix = self.prefixParseFns[self.curToken.Type]	#
+			print("parseExpression()3: ", prefix)				#
+		else:													#
+			self.noPrefixParseFnError(self.curToken.Type)		#
+			return None											#	
+		#############################
 		
 		if prefix == None:
 			self.noPrefixParseFnError(self.curToken.Type)
 			return None
 		
 		leftExp = prefix()
-		print("parseExpression(): ", leftExp)
+		print("parseExpression()4: ", leftExp)
 		
 		while not self.peekTokenIs(token.SEMICOLON) and precedence < self.peekPrecedence():
 			infix = self.infixParseFns[self.peekToken.Type]
