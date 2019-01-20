@@ -15,16 +15,16 @@ CALL		= 7
 INDEX		= 8
 
 precedences = {
-	token.EQ:		EQUALS,
-	token.NOT_EQ:	EQUALS,
-	token.LT:		LESSGREATER,
-	token.GT:		LESSGREATER,
-	token.PLUS:		SUM,
-	token.MINUS:	SUM,
-	token.SLASH:	PRODUCT,
-	token.ASTERISK:	PRODUCT,
-	token.LPAREN:	CALL,
-	token.LBRACKET:	INDEX,
+	token.EQ:			EQUALS,
+	token.NOT_EQ:		EQUALS,
+	token.LT:			LESSGREATER,
+	token.GT:			LESSGREATER,
+	token.PLUS:			SUM,
+	token.MINUS:		SUM,
+	token.SLASH:		PRODUCT,
+	token.ASTERISK:		PRODUCT,
+	token.LPAREN:		CALL,
+	token.LBRACKET:		INDEX,
 }
 
 
@@ -36,17 +36,19 @@ class Parser:
 		#self.l.readChar() # lexer.New()の中で1回readCharを呼んでいる
 		
 		self.l = lexer.New(inputstr)
-		self.curToken = None # token.Token("", "")
-		self.peekToken = None # token.Token("", "")
+		#self.curToken = None # token.Token("", "")
+		#self.peekToken = None # token.Token("", "")
+		self.curToken = token.Token("", "")
+		self.peekToken = token.Token("", "")
 		
 		#self.nextToken()
 		#self.nextToken()
 		
-		#self.errors = []
+		self.errors = []
 		
 		print("Parser.__init__():", self.l.input)
 		print("Parser.__init__():", self.l)
-		"""
+		
 		self.prefixParseFns = {}
 		self.registerPrefix(token.IDENT, self.parseIdentifier)
 		self.registerPrefix(token.INT, self.parseIntegerLiteral)
@@ -73,7 +75,7 @@ class Parser:
 		self.registerInfix(token.GT, self.parseInfixExpression)
 		self.registerInfix(token.LPAREN, self.parseCallExpression)
 		self.registerInfix(token.LBRACKET, self.parseIndexExpression)
-		"""
+		
 		
 	def nextToken(self):
 		self.curToken = self.peekToken
@@ -85,7 +87,7 @@ class Parser:
 		program = ast.Program()
 		program.Statements = []
 		
-		self.curToken.printout()
+		#self.curToken.printout()
 		
 		print("ParseProgram()1: ", self.curToken.Type)
 		
@@ -195,6 +197,7 @@ class Parser:
 		print("parseExpression()4: ", leftExp)
 		
 		while not self.peekTokenIs(token.SEMICOLON) and precedence < self.peekPrecedence():
+			# ディクショナリのチェックは必要?
 			infix = self.infixParseFns[self.peekToken.Type]
 			if infix == None:
 				return leftExp

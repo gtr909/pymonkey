@@ -52,7 +52,7 @@ class Program:
 
 class LetStatement:
 	def __init__(self):
-		self.Token = None
+		self.Token = None		# token.pyのTokenクラス
 		self.Name = None
 		self.Value = None
 	
@@ -83,7 +83,7 @@ class LetStatement:
 class Identifier:
 	def __init__(self):
 		self.Token = None
-		self.Value = None
+		self.Value = None		# self.Value = ""
 	
 	def expressionNode(self):
 		pass
@@ -141,6 +141,7 @@ class IntegerLiteral:
 	def __init__(self):
 		self.Token = None
 		self.Value = None
+		# self.Value = 0
 	
 	def expressionNode(self):
 		pass

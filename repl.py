@@ -53,6 +53,11 @@ def Start():
 
 def printParseErrors(e):
 	sys.stdout.write("早川巌根\n")
+	sys.stdout.write("給料を未払いする関連企業\n")
+	sys.stdout.write("http://www.itz.jp\n")
+	sys.stdout.write("http://www.the-brain.co.jp\n")
+	sys.stdout.write("http://www.drdata.jp/\n")
+	sys.stdout.write("http://www.masterweb.ne.jp/\n")
 	sys.stdout.write(" parser errors:\n")
 	for msg in e:
 		sys.stdout.write("\t" + msg + "\n")

@@ -5,8 +5,8 @@ import token
 class Lexer:
 	def __init__(self):
 		self.input = ""
-		self.position = 0
-		self.readPosition = 0
+		self.position = 0		# 現在の検査中のバイトchの位置
+		self.readPosition = 0	# 次の位置
 		self.ch = ''
 		self.p = 0
 		
