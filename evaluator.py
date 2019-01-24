@@ -530,8 +530,9 @@ def evalExpressions(exps, env):
 		if isError(evaluated):
 			print("evalExpressions():3 ", evaluated)
 			#return []object.Object{evaluated}##
-			# result.append(evaluated) ####???
-			# return result            ####???
+			# ret = []              ####???
+			# ret.append(evaluated) ####???
+			# return ret            ####???
 			return evaluated ###
 			
 		result.append(evaluated)
