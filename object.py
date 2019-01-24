@@ -132,7 +132,7 @@ class String(object):
 		return self.Value
 
 	def HashKey_method(self):
-		msg = hashlib.md5((self.Value).encode('utf-8')).hexdigest()
+		msg = hashlib.md5((self.Value).encode('utf-8')).hexdigest() # ネットで検索し流用
 		ret = HashKey()
 		ret.Type = self.Type()
 		ret.Value = msg

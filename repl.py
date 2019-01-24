@@ -47,7 +47,7 @@ def Start():
 				sys.stdout.write(str(evaluated))
 				sys.stdout.write("\n")
 			else:
-				print("Start()3: type intobj")
+				print("Start()3: ")
 				sys.stdout.write(evaluated.Inspect())
 				sys.stdout.write("\n")
 

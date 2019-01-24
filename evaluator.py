@@ -94,7 +94,7 @@ def funcname_first(args):
 
 def funcname_len(args):
 	print("funcname_len()1: ", args, type(args))
-	print("funcname_len()2: ", args[0], type(args[0]))
+	#print("funcname_len()2: ", args[0], type(args[0]))
 	
 	if len(args) != 1:
 		return newError("wrong number of arguments ", len(args))
@@ -119,6 +119,11 @@ def funcname_len(args):
 		ret = object.Integer()
 		ret.Value = int(len(args[0]))
 		return ret
+	###############################################################
+	# len関数に未束縛の引数を渡したときのエラー処理
+	elif arg == object.Error:
+		return newError("funcname_len()7: ", str(args[0].Message))
+	###############################################################
 	else:
 		return newError("argument to len not supported ", type(args[0]))
 
@@ -224,6 +229,17 @@ def Eval(node, env):
 		if isError(function):
 			return function
 		args = evalExpressions(node.Arguments, env)
+		
+		print("Eval():ast.CallExpression:1 ", args, type(args))
+		#print("Eval():ast.CallExpression:2 ", args[0])
+		
+		###############################################
+		# len(letで束縛してない変数)のエラーを補足
+		# e.g. len(ghy) 2019/01/22 21:44
+		#if type(args) == object.Error:
+		#	return newError("identifier not found: ")
+		###############################################
+		
 		if len(args) == 1 and isError(args[0]):
 			return args[0]
 		
@@ -462,6 +478,11 @@ def isError(obj):
 		return False
 	elif type(obj) == bool:
 		return False
+	###############################################
+	# len(abc)束縛してない変数をエラー処理するため
+	elif type(obj) == object.Error:
+		return False
+	###############################################
 	#elif obj != None:
 	elif obj != NULL:
 		return obj.Type() == object.ERROR_OBJ
@@ -487,6 +508,7 @@ def evalIdentifier(node, env):
 	print("evalIdentifier():2 ", node.Value, type(node.Value))
 	val = env.Get(node.Value)
 	print("evalIdentifier():3 ", val, type(val))
+	
 	if val != NULL:
 		return val
 	elif node.Value in BUILTINS:
@@ -494,6 +516,7 @@ def evalIdentifier(node, env):
 		print("evalIdentifier():4 ", builtin, type(builtin))
 		return builtin
 	else:
+		print("evalIdentifier():5 ", val, type(val))
 		return newError("identifier not found: " + str(node.Value))
 	
 
@@ -501,13 +524,18 @@ def evalExpressions(exps, env):
 	result = []
 	
 	for e in exps:
+		print("evalExpressions():1 ", e, type(e))
 		evaluated = Eval(e, env)
+		print("evalExpressions():2 ", evaluated, type(evaluated))
 		if isError(evaluated):
-			print("evalExpressions(): ", evaluated)
+			print("evalExpressions():3 ", evaluated)
 			#return []object.Object{evaluated}##
+			# result.append(evaluated) ####???
 			return evaluated ###
+			
 		result.append(evaluated)
-	
+		
+	print("evalExpressions():4 ", result, type(result))
 	return result
 
 def applyFunction(fn, args):
@@ -538,10 +566,10 @@ def applyFunction(fn, args):
 		
 		return unwrapReturnValue(evaluated)
 	elif function == object.Builtin:
-		print("applyFunction():2 ", fn, args, type(args))
+		print("applyFunction():3 ", fn, args, type(args))
 		return fn.Fn(args) ########
 	else:
-		print("applyFunction():3 ", fn)
+		print("applyFunction():4 ", fn)
 		return newError("not a function: ", fn.Type())
 	
 

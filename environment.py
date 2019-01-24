@@ -7,7 +7,7 @@ def NewEnvironment():
 	
 	ret = Environment()
 	ret.store = s
-	ret.outer = None #? or evaluator.NULL
+	ret.outer = None #? or evaluator.NULL どうすればいいのか
 	return ret
 
 class Environment:
